@@ -10,27 +10,25 @@
 </head>
 <body>
     <div class="container">
-        <h1>File to ZIP Converter</h1>
-        <p>Select a file to convert it to a ZIP archive.</p>
+        <h1>Multi-File ZIP Converter</h1>
+        <p>Select multiple files to compress them into a single ZIP archive.</p>
         
-        <form id="upload-form" hx-encoding="multipart/form-data" hx-post="/compress" hx-target="#result" hx-swap="innerHTML" hx-indicator="#loading">
+        <form enctype="multipart/form-data" hx-encoding="multipart/form-data" hx-post="/compress" hx-target="#result" hx-swap="innerHTML" hx-indicator="#loading">
             <div class="file-upload">
                 <label for="file-input" class="file-label">
                     <span class="file-icon">📁</span>
-                    <span class="file-text">Choose a file</span>
+                    <span class="file-text">Choose files</span>
                 </label>
-                <input type="file" id="file-input" name="file" required 
-                       hx-on:change="htmx.trigger('#file-display', 'update-filename')"
-                       hx-target="#file-info">
+                <input type="file" id="file-input" name="files" required multiple
+                       hx-post="/filename"
+                       hx-trigger="change"
+                       hx-target="#file-info"
+                       hx-swap="innerHTML">
             </div>
             
-            <div class="file-info" id="file-info" 
-                 hx-post="/filename"
-                 hx-trigger="change from:#file-input"
-                 hx-target="this"
-                 hx-swap="innerHTML">No file selected</div>
+            <div class="file-info" id="file-info">No files selected</div>
             
-            <button type="submit" class="submit-btn">Convert to ZIP</button>
+            <button type="submit" class="submit-btn">Create ZIP Archive</button>
         </form>
         
         <div class="loading" id="loading">
