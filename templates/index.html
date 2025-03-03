@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File to ZIP Converter</title>
+    <!-- HTMX for interactive UI without JavaScript -->
+    <script src="https://unpkg.com/htmx.org@1.9.2"></script>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>File to ZIP Converter</h1>
+        <p>Select a file to convert it to a ZIP archive.</p>
+        
+        <form id="upload-form" hx-encoding="multipart/form-data" hx-post="/compress" hx-target="#result" hx-swap="innerHTML" hx-indicator="#loading">
+            <div class="file-upload">
+                <label for="file-input" class="file-label">
+                    <span class="file-icon">📁</span>
+                    <span class="file-text">Choose a file</span>
+                </label>
+                <input type="file" id="file-input" name="file" required 
+                       hx-on:change="htmx.trigger('#file-display', 'update-filename')"
+                       hx-target="#file-info">
+            </div>
+            
+            <div class="file-info" id="file-info" 
+                 hx-post="/filename"
+                 hx-trigger="change from:#file-input"
+                 hx-target="this"
+                 hx-swap="innerHTML">No file selected</div>
+            
+            <button type="submit" class="submit-btn">Convert to ZIP</button>
+        </form>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <span>Processing...</span>
+        </div>
+        
+        <div id="result" class="result"></div>
+    </div>
+</body>
+</html>
